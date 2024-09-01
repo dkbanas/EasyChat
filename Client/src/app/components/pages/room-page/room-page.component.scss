@@ -1,0 +1,70 @@
+.room-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.navbar {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.messages-section {
+  display: flex;
+  flex-direction: column;
+  background-color: #e9ecef;
+  padding: 10px;
+}
+
+.message-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Adds space between messages */
+}
+
+.message-bubble {
+  padding: 0.5rem 1rem;
+  border-radius: 15px;
+  max-width: 75%;
+  margin: 0.5rem 0;
+  position: relative;
+  word-break: break-word; /* Handle long words */
+  overflow-wrap: break-word; /* Ensure long words break */
+  background-color: #fff; /* Default bubble background */
+  color: #000; /* Default text color */
+}
+
+.my-message .message-bubble {
+  background-color: #007bff;
+  color: #fff;
+  align-self: flex-end;
+}
+
+.other-message .message-bubble {
+  background-color: #fff;
+  color: #000;
+  align-self: flex-start;
+}
+
+.bot-message {
+  text-align: center;
+  margin: 1rem 0;
+  font-size: 1rem;
+  color: #6c757d; /* Muted color for bot messages */
+}
+
+.message-user {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-bottom: 0.2rem;
+}
+
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.text-muted {
+  color: #6c757d !important;
+}
