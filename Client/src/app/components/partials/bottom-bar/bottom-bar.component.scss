@@ -1,0 +1,22 @@
+.bottom-bar {
+  z-index: 1000; /* Ensure it stays above other content */
+}
+
+.bottom-bar .input-group {
+  margin: 0; /* Adjust if necessary to prevent overlap */
+}
+
+.bottom-bar .form-control {
+  border-radius: 0; /* Remove border-radius if needed to match with other styles */
+}
+
+.bottom-bar .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem; /* Adjust padding as needed */
+}
+
+.bottom-bar .btn .bi {
+  font-size: 1.25rem; /* Adjust icon size */
+}

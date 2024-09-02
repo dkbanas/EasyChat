@@ -20,8 +20,10 @@ export class JoinPageComponent {
 
   async joinRoom(): Promise<void> {
     if (this.userName && this.roomName) {
+      this.chatService.setUser(this.userName);
+      this.chatService.setRoom(this.roomName);
       await this.chatService.joinRoom(this.userName, this.roomName);
-      this.router.navigate(['/room']);
+      this.router.navigate(['/room', this.roomName]);
     }
   }
 }

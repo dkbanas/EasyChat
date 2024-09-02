@@ -4,5 +4,5 @@ import {RoomPageComponent} from "./components/pages/room-page/room-page.componen
 
 export const routes: Routes = [
   {path:'', component:JoinPageComponent},
-  {path:'room',component:RoomPageComponent}
+  { path: 'room/:roomName', component: RoomPageComponent }
 ];

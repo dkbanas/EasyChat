@@ -1,37 +1,10 @@
 <div class="room-page d-flex flex-column vh-100">
   <!-- Navbar -->
-  <nav class="navbar navbar-light bg-light mb-3">
-    <span class="navbar-brand">{{ roomName }}</span>
-    <button class="btn btn-danger ml-auto" (click)="closeConnection()">Leave</button>
-  </nav>
+  <app-top-navbar [roomName]="roomName"></app-top-navbar>
 
   <!-- Messages Section -->
-  <div class="messages-section flex-fill overflow-auto p-3">
-    <div class="message-container">
-      <ng-container *ngIf="messages.length > 0; else noMessages">
-        <div *ngFor="let message of messages" [ngClass]="{
-          'my-message': message.user === user,
-          'other-message': message.user !== user,
-          'bot-message': message.user === 'MyChat Bot'
-        }">
-          <div *ngIf="message.user !== 'MyChat Bot'" class="message-user">{{ message.user }}</div>
-          <div class="message-bubble" *ngIf="message.user !== 'MyChat Bot'">{{ message.message }}</div>
-          <div class="bot-message" *ngIf="message.user === 'MyChat Bot'">{{ message.message }}</div>
-        </div>
-      </ng-container>
-      <ng-template #noMessages>
-        <div class="text-muted text-center">No messages yet</div>
-      </ng-template>
-    </div>
-  </div>
+  <app-messages-section [messages]="messages" [user]="user"></app-messages-section>
 
   <!-- Bottom Bar -->
-  <div class="bottom-bar bg-light p-2 border-top">
-    <form (ngSubmit)="sendMessage()">
-      <div class="input-group">
-        <input type="text" [(ngModel)]="message" placeholder="Enter your message" class="form-control" name="message"/>
-        <button type="submit" class="btn btn-primary">Send</button>
-      </div>
-    </form>
-  </div>
+  <app-bottom-bar [message]="message" (messageChange)="message = $event"></app-bottom-bar>
 </div>
