@@ -16,6 +16,7 @@ export class ChatService {
   users$ = this.usersSubject.asObservable();
 
   private hubConnection: HubConnection | null = null;
+  private audio = new Audio('message.mp3');
 
   constructor() {}
 
@@ -34,6 +35,7 @@ export class ChatService {
       this.hubConnection.on("ReceiveMessage", (user, message) => {
         const currentMessages = this.messagesSubject.value;
         this.messagesSubject.next([...currentMessages, { user, message }]);
+        this.playNotificationSound();
       });
 
       this.hubConnection.on("UsersInRoom", (users) => {
@@ -67,7 +69,7 @@ export class ChatService {
     try {
       if (this.hubConnection) {
         await this.hubConnection.stop();
-        this.hubConnection = null; // Ensure hubConnection is set to null after stopping
+        this.hubConnection = null;
       }
     } catch (e) {
       console.log(e);
@@ -88,5 +90,13 @@ export class ChatService {
 
   getRoom(): string | null {
     return this._roomName;
+  }
+
+  private playNotificationSound(): void {
+    if (document.visibilityState === 'hidden') {
+      this.audio.play().catch(error => {
+        console.error('Error playing sound', error);
+      });
+    }
   }
 }

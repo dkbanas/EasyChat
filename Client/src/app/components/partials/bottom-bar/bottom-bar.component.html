@@ -1,10 +1,27 @@
-<div class="bottom-bar bg-light p-2 border-top fixed-bottom">
+<div class="bottom-bar bg-light p-3 border-top shadow-sm fixed-bottom">
   <form (ngSubmit)="sendMessage()">
     <div class="input-group">
-      <input type="text" [(ngModel)]="message" placeholder="Enter your message" class="form-control" name="message"/>
+
+      <button type="button" class="btn btn-outline-secondary" (click)="toggleEmojiPicker()">
+        <i class="bi bi-emoji-smile"></i>
+      </button>
+
+      <emoji-mart
+        *ngIf="showEmojiPicker"
+        (emojiClick)="addEmoji($event)"
+        [isNative]="true"
+        class="emoji-picker">
+      </emoji-mart>
+
+      <input
+        type="text"
+        [(ngModel)]="message"
+        placeholder="Enter your message"
+        class="form-control"
+        name="message"/>
       <button type="submit" class="btn btn-primary">
-        <i class="bi bi-send"></i> <!-- Send icon -->
-        <span class="visually-hidden">Send</span> <!-- Accessible label -->
+        <i class="bi bi-send"></i>
+        <span class="visually-hidden">Send</span>
       </button>
     </div>
   </form>

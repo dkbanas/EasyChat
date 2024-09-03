@@ -1,22 +1,29 @@
-<div class="join-page-container d-flex justify-content-center align-items-center">
-  <div class="modal-content p-4">
+<div class="d-flex justify-content-center align-items-center vh-100 bg-dark">
+  <div class="modal-content p-4 bg-light shadow-lg rounded">
     <h2 class="text-center mb-4">Join a Chat Room</h2>
-    <form (ngSubmit)="joinRoom()">
-      <div class="input-group mb-3">
-        <span class="input-group-text">
-          <i class="bi bi-door-open-fill"></i>
-        </span>
-        <input type="text" id="roomName" class="form-control" [(ngModel)]="roomName" name="roomName" placeholder="Enter room name" />
+    <form [formGroup]="joinForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="roomName" class="form-label">
+          <i class="bi bi-door-open-fill"></i> Room Name
+        </label>
+        <input type="text" id="roomName" class="form-control"
+               formControlName="roomName" name="roomName"
+               placeholder="Enter room name" required />
       </div>
 
-      <div class="input-group mb-3">
-        <span class="input-group-text">
-          <i class="bi bi-person-fill"></i>
-        </span>
-        <input type="text" id="userName" class="form-control" [(ngModel)]="userName" name="userName" placeholder="Enter your username" />
+      <div class="mb-3">
+        <label for="userName" class="form-label">
+          <i class="bi bi-person-fill"></i> Username
+        </label>
+        <input type="text" id="userName" class="form-control"
+               formControlName="userName" name="userName"
+               placeholder="Enter your username" required />
       </div>
+
       <div class="text-end">
-        <button type="submit" class="btn btn-primary" [disabled]="!userName || !roomName">Join</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!joinForm.valid">
+          Join
+        </button>
       </div>
     </form>
   </div>

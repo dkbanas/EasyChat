@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using API.Interfaces;
+using API.Models;
 using Microsoft.AspNetCore.SignalR;
 
 namespace API.Hubs;
@@ -6,19 +7,21 @@ namespace API.Hubs;
 public class ChatHub : Hub
 {
     private readonly string _botUser;
-    private readonly IDictionary<string, UserConnection> _connections;
+    private readonly IUserConnectionManager _connectionManager;
 
-    public ChatHub(IDictionary<string, UserConnection> connections)
+    public ChatHub(IUserConnectionManager connectionManager)
     {
-        _botUser = "MyChat Bot";            
-        _connections = connections;
+        _botUser = "MyChat Bot";
+        _connectionManager = connectionManager;
     }
 
-    public override Task OnDisconnectedAsync(Exception exception)
+    public override Task OnDisconnectedAsync(Exception? exception)
     {
-        if (_connections.TryGetValue(Context.ConnectionId, out UserConnection userConnection))
+        var userConnection = _connectionManager.GetConnection(Context.ConnectionId);
+
+        if (userConnection != null)
         {
-            _connections.Remove(Context.ConnectionId);
+            _connectionManager.RemoveConnection(Context.ConnectionId);
             Clients.Group(userConnection.Room).SendAsync("ReceiveMessage", _botUser, $"{userConnection.User} has left");
             SendUsersConnected(userConnection.Room);
         }
@@ -30,7 +33,7 @@ public class ChatHub : Hub
     {
         await Groups.AddToGroupAsync(Context.ConnectionId, userConnection.Room);
 
-        _connections[Context.ConnectionId] = userConnection;
+        _connectionManager.AddConnection(Context.ConnectionId, userConnection);
 
         await Clients.Group(userConnection.Room).SendAsync("ReceiveMessage", _botUser, $"{userConnection.User} has joined {userConnection.Room}");
 
@@ -39,7 +42,9 @@ public class ChatHub : Hub
 
     public async Task SendMessage(string message)
     {
-        if (_connections.TryGetValue(Context.ConnectionId, out UserConnection userConnection))
+        var userConnection = _connectionManager.GetConnection(Context.ConnectionId);
+
+        if (userConnection != null)
         {
             await Clients.Group(userConnection.Room).SendAsync("ReceiveMessage", userConnection.User, message);
         }
@@ -47,8 +52,7 @@ public class ChatHub : Hub
 
     public Task SendUsersConnected(string room)
     {
-        var users = _connections.Values
-            .Where(c => c.Room == room)
+        var users = _connectionManager.GetConnectionsByRoom(room)
             .Select(c => c.User);
 
         return Clients.Group(room).SendAsync("UsersInRoom", users);

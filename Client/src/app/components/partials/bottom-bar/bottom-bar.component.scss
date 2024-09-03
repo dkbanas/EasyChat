@@ -1,22 +1,37 @@
+.emoji-picker {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  z-index: 1000;
+}
+
+.form-control {
+  font-size: 1.25rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  border: 1px solid #ced4da;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+  outline: none;
+}
+
+.btn-primary {
+  font-size: 1.25rem;
+  padding: 0.5rem 1rem;
+}
+
+.btn-outline-secondary {
+  font-size: 1.25rem;
+}
+
 .bottom-bar {
-  z-index: 1000; /* Ensure it stays above other content */
+  border-top: 1px solid #dee2e6;
+  background-color: #f8f9fa;
 }
 
-.bottom-bar .input-group {
-  margin: 0; /* Adjust if necessary to prevent overlap */
-}
-
-.bottom-bar .form-control {
-  border-radius: 0; /* Remove border-radius if needed to match with other styles */
-}
-
-.bottom-bar .btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem; /* Adjust padding as needed */
-}
-
-.bottom-bar .btn .bi {
-  font-size: 1.25rem; /* Adjust icon size */
+.input-group {
+  position: relative;
 }

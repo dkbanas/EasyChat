@@ -1,5 +1,4 @@
-﻿namespace Core.Entities;
-
+﻿namespace API.Models;
 public class UserConnection
 {
     public string User {get; set; }

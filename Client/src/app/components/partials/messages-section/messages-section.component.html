@@ -7,7 +7,9 @@
                         'bot-message': message.user === 'MyChat Bot'
       }">
         <div *ngIf="message.user !== 'MyChat Bot'" class="message-user">{{ message.user }}</div>
+
         <div class="message-bubble" *ngIf="message.user !== 'MyChat Bot'">{{ message.message }}</div>
+
         <div class="bot-message" *ngIf="message.user === 'MyChat Bot'">{{ message.message }}</div>
       </div>
     </ng-container>
