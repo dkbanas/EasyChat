@@ -15,6 +15,8 @@ export class TopNavbarComponent {
   constructor(private chatService: ChatService, private router: Router) {}
 
   closeConnection(): void {
+    sessionStorage.removeItem('userName');
+    sessionStorage.removeItem('roomName');
     this.chatService.closeConnection();
     this.router.navigate(['']);
   }

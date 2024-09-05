@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {ChatService} from "../../../services/chat.service";
 import {FormsModule} from "@angular/forms";
-import {ActivatedRoute, Router} from "@angular/router";
 import {BottomBarComponent} from "../../partials/bottom-bar/bottom-bar.component";
 import {MessagesSectionComponent} from "../../partials/messages-section/messages-section.component";
 import {TopNavbarComponent} from "../../partials/top-navbar/top-navbar.component";
@@ -21,11 +20,11 @@ export class RoomPageComponent {
   messages: { user: string, message: string }[] = [];
   users: string[] = [];
 
-  constructor(private chatService: ChatService, private router: Router) {}
+  constructor(private chatService: ChatService) {}
 
   ngOnInit(): void {
-    this.user = this.chatService.getUser() || '';
-    this.roomName = this.chatService.getRoom() || '';
+    this.user = sessionStorage.getItem('userName') || '';
+    this.roomName = sessionStorage.getItem('roomName') || '';
 
     this.chatService.messages$.subscribe((messages) => {
       this.messages = messages;
@@ -42,8 +41,5 @@ export class RoomPageComponent {
     await this.chatService.joinRoom(this.user, this.roomName);
   }
 
-  closeConnection(): void {
-    this.chatService.closeConnection();
-    this.router.navigate(['']);
-  }
+
 }

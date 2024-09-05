@@ -9,16 +9,20 @@ export class ChatService {
   private messagesSubject = new BehaviorSubject<{ user: string, message: string }[]>([]);
   private usersSubject = new BehaviorSubject<string[]>([]);
 
-  private _username: string | null = null;
-  private _roomName: string | null = null;
-  // Observable streams
+  private messagesCache: { user: string, message: string }[] = [];
   messages$ = this.messagesSubject.asObservable();
   users$ = this.usersSubject.asObservable();
 
   private hubConnection: HubConnection | null = null;
   private audio = new Audio('message.mp3');
 
-  constructor() {}
+  constructor() {
+    const cachedMessages = sessionStorage.getItem('messages');
+    if (cachedMessages) {
+      this.messagesCache = JSON.parse(cachedMessages);
+      this.messagesSubject.next(this.messagesCache);
+    }
+  }
 
   async joinRoom(user: string, room: string): Promise<void> {
     if (this.hubConnection && this.hubConnection.state === HubConnectionState.Connected) {
@@ -33,8 +37,9 @@ export class ChatService {
         .build();
 
       this.hubConnection.on("ReceiveMessage", (user, message) => {
-        const currentMessages = this.messagesSubject.value;
-        this.messagesSubject.next([...currentMessages, { user, message }]);
+        this.messagesCache.push({ user, message });
+        sessionStorage.setItem('messages', JSON.stringify(this.messagesCache));
+        this.messagesSubject.next(this.messagesCache);
         this.playNotificationSound();
       });
 
@@ -44,6 +49,8 @@ export class ChatService {
 
       this.hubConnection.onclose(() => {
         this.hubConnection = null;
+        this.messagesCache = [];
+        localStorage.removeItem('messages');
         this.messagesSubject.next([]);
         this.usersSubject.next([]);
       });
@@ -74,22 +81,6 @@ export class ChatService {
     } catch (e) {
       console.log(e);
     }
-  }
-
-  setUser(username: string): void {
-    this._username = username;
-  }
-
-  getUser(): string | null {
-    return this._username;
-  }
-
-  setRoom(roomName: string): void {
-    this._roomName = roomName;
-  }
-
-  getRoom(): string | null {
-    return this._roomName;
   }
 
   private playNotificationSound(): void {

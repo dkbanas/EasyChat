@@ -30,8 +30,10 @@ export class JoinPageComponent {
   async onSubmit(): Promise<void> {
     if (this.joinForm.valid) {
       const { roomName, userName } = this.joinForm.value;
-      this.chatService.setUser(userName);
-      this.chatService.setRoom(roomName);
+
+      sessionStorage.setItem('userName', userName);
+      sessionStorage.setItem('roomName', roomName);
+
       await this.chatService.joinRoom(userName, roomName);
       this.router.navigate(['/room', roomName]);
     }
